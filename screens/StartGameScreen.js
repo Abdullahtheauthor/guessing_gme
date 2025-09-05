@@ -6,6 +6,7 @@ import {
   Text,
   Dimensions,
   useWindowDimensions,
+  KeyboardAvoidingView,
 } from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { useState } from "react";
@@ -41,40 +42,47 @@ function StartGameScreen({ onPickNumber }) {
 
   const marginTopDistance = height < 914 ? 30 : 100;
   return (
-    <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
-      <Title>Guess My Number</Title>
+    <KeyboardAvoidingView style={styles.screen} behavior="position">
+      <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
+        <Title>Guess My Number</Title>
 
-      <Card>
-        <InstructionText>Enter a Number</InstructionText>
-        <TextInput
-          style={styles.numberInput}
-          maxLength={2}
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={enteredNumber}
-          on
-          onChangeText={numberInputHandler}
-        />
+        <Card>
+          <InstructionText>Enter a Number</InstructionText>
+          <TextInput
+            style={styles.numberInput}
+            maxLength={2}
+            keyboardType="number-pad"
+            autoCapitalize="none"
+            autoCorrect={false}
+            value={enteredNumber}
+            on
+            onChangeText={numberInputHandler}
+          />
 
-        {/* auto correct and autocaptialize used with text as it is good for user experience */}
-        {/* maxLength dictates that the user only can input two digits */}
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+          {/* auto correct and autocaptialize used with text as it is good for user experience */}
+          {/* maxLength dictates that the user only can input two digits */}
+          <View style={styles.buttonsContainer}>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+            </View>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton onPress={confirmInputHandler}>
+                confirm
+              </PrimaryButton>
+            </View>
           </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={confirmInputHandler}>confirm</PrimaryButton>
-          </View>
-        </View>
-      </Card>
-    </View>
+        </Card>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 const deviceHeight = Dimensions.get("window").height;
 console.log("device height is " + deviceHeight);
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   rootContainer: {
     flex: 1,
     // marginTop: deviceHeight < 500 ? 30 : 100,
