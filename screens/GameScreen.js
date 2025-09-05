@@ -13,6 +13,7 @@ import {
   Item,
   FlatList,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card";
@@ -142,6 +143,8 @@ function GameScreen({ userNum, isGameOver }) {
     // </LinearGradient>
   );
 }
+
+const deviceHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {

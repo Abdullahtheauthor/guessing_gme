@@ -9,7 +9,7 @@ function NumberContainer({ children }) {
   );
 }
 
-const deviceWidth = Dimensions.get("window").width;
+const deviceWidth = Dimensions.get("window").width; // scren or window, window wxcludes the status bar in Android
 const styles = StyleSheet.create({
   outerContainer: {
     borderColor: Colors.accent500,

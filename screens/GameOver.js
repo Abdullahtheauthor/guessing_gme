@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Dimensions } from "react-native";
 import Colors from "../constants/Colors";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { View, Image } from "react-native";
@@ -34,11 +34,13 @@ function GameOver({ guess, onRestart, numberOfTrials }) {
   );
 }
 
+const deviceWidth = Dimensions.get("window");
 const styles = StyleSheet.create({
   rootScreen: {
     flex: 1,
     alignContent: "center",
     justifyContent: "center",
+    alignItems: "center",
     padding: 24,
   },
   textContainer: {
@@ -52,9 +54,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     // marginTop: 20,
-    width: 300,
-    height: 300,
-    borderRadius: 150,
+    width: deviceWidth < 380 ? 150 : 300,
+    height: deviceWidth < 380 ? 150 : 300,
+    borderRadius: deviceWidth < 380 ? 75 : 150,
     borderWidth: 3,
     overflow: "hidden",
     margin: 36,
@@ -77,3 +79,7 @@ const styles = StyleSheet.create({
 });
 
 export default GameOver;
+
+// Dimensions is used to adjust the compoents specs in relative to the screen
+// for auto rotation, you need to edit the value:   "orientation": "portrait" to default and press r in expo. You will notice that the app is not properly
+// shown anymore.
