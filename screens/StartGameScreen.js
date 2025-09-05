@@ -7,6 +7,7 @@ import {
   Dimensions,
   useWindowDimensions,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { useState } from "react";
@@ -42,38 +43,40 @@ function StartGameScreen({ onPickNumber }) {
 
   const marginTopDistance = height < 914 ? 30 : 100;
   return (
-    <KeyboardAvoidingView style={styles.screen} behavior="position">
-      <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
-        <Title>Guess My Number</Title>
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView style={styles.screen} behavior="position">
+        <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
+          <Title>Guess My Number</Title>
 
-        <Card>
-          <InstructionText>Enter a Number</InstructionText>
-          <TextInput
-            style={styles.numberInput}
-            maxLength={2}
-            keyboardType="number-pad"
-            autoCapitalize="none"
-            autoCorrect={false}
-            value={enteredNumber}
-            on
-            onChangeText={numberInputHandler}
-          />
+          <Card>
+            <InstructionText>Enter a Number</InstructionText>
+            <TextInput
+              style={styles.numberInput}
+              maxLength={2}
+              keyboardType="number-pad"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={enteredNumber}
+              on
+              onChangeText={numberInputHandler}
+            />
 
-          {/* auto correct and autocaptialize used with text as it is good for user experience */}
-          {/* maxLength dictates that the user only can input two digits */}
-          <View style={styles.buttonsContainer}>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+            {/* auto correct and autocaptialize used with text as it is good for user experience */}
+            {/* maxLength dictates that the user only can input two digits */}
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+              </View>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={confirmInputHandler}>
+                  confirm
+                </PrimaryButton>
+              </View>
             </View>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={confirmInputHandler}>
-                confirm
-              </PrimaryButton>
-            </View>
-          </View>
-        </Card>
-      </View>
-    </KeyboardAvoidingView>
+          </Card>
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 const deviceHeight = Dimensions.get("window").height;
