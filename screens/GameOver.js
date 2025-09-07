@@ -1,4 +1,10 @@
-import { Text, StyleSheet, Dimensions } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  Dimensions,
+  useWindowDimensions,
+  ScrollView,
+} from "react-native";
 import Colors from "../constants/Colors";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { View, Image } from "react-native";
@@ -10,32 +16,74 @@ function GameOver({ guess, onRestart, numberOfTrials }) {
     onRestart(true);
   }
 
+  const { width, height } = useWindowDimensions();
+
+  let imageSize = 300;
+  if (width < 380) {
+    imageSize = 150;
+  }
+
+  if (height < 420) {
+    imageSize = 80;
+  }
+
+  const imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: imageSize / 2,
+  };
+  console.log("width: ", width, " + ", "height ", height);
+
+  // if (height < 500) {
+  //   imagecontent = (
+  //     <>
+  //       <View style={styles.imageContainerWide}>
+  //         <Image
+  //           style={styles.image}
+  //           source={require("../assets/images/success.png")}
+  //         />
+  //       </View>
+  //     </>
+  //   );
+  // }
+
   return (
-    <View style={styles.rootScreen}>
-      <Title>Game is over!</Title>
-      <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={pressHandler} ripple_color="red">
-          Play Again!
-        </PrimaryButton>
+    <ScrollView style={{ flex: 1 }}>
+      <View style={styles.rootScreen}>
+        <Title>Game is over!</Title>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPress={pressHandler} ripple_color="red">
+            Play Again!
+          </PrimaryButton>
+        </View>
+        <View style={[styles.imageContainer, imageStyle]}>
+          <Image
+            style={styles.image}
+            source={require("../assets/images/success.png")}
+          />
+        </View>
+        <Text style={styles.summaryText}>
+          your chosen number is{" "}
+          <Text style={styles.highlightText}>{guess} </Text> and it took pc to{" "}
+          <Text style={styles.highlightText}>{numberOfTrials} </Text>
+          number of rounds
+        </Text>
       </View>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/success.png")}
-        />
-      </View>
-      <Text style={styles.summaryText}>
-        your chosen number is <Text style={styles.highlightText}>{guess} </Text>{" "}
-        and it took pc to{" "}
-        <Text style={styles.highlightText}>{numberOfTrials} </Text>
-        number of rounds
-      </Text>
-    </View>
+    </ScrollView>
   );
 }
 
-const deviceWidth = Dimensions.get("window");
+// const deviceWidth = Dimensions.get("window");
+
 const styles = StyleSheet.create({
+  imageContainerWide: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 3,
+    overflow: "hidden",
+    margin: 36,
+  },
   rootScreen: {
     flex: 1,
     alignContent: "center",
@@ -54,9 +102,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     // marginTop: 20,
-    width: deviceWidth < 380 ? 150 : 300,
-    height: deviceWidth < 380 ? 150 : 300,
-    borderRadius: deviceWidth < 380 ? 75 : 150,
+    // width: deviceWidth < 380 ? 150 : 300,
+    // height: deviceWidth < 380 ? 150 : 300,
+    // borderRadius: deviceWidth < 380 ? 75 : 150,
     borderWidth: 3,
     overflow: "hidden",
     margin: 36,
