@@ -14,6 +14,8 @@ import {
   FlatList,
   SafeAreaView,
   Dimensions,
+  useWindowDimensions,
+  ScrollView,
 } from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card";
@@ -21,7 +23,7 @@ import Card from "../components/ui/Card";
 import { LinearGradient } from "expo-linear-gradient";
 import Title from "../components/ui/Title";
 import Colors from "../constants/Colors";
-import { useState, useEffect } from "react";
+import { useState, useEffect, cloneElement } from "react";
 import NumberContainer from "../components/game/NumberContainer";
 import InstructionText from "../components/ui/InstructionText";
 
@@ -37,6 +39,8 @@ function GameScreen({ userNum, isGameOver }) {
 
   const [currentGuess, setCurrentGuess] = useState(intialGuess);
   const [guessRounds, setguessRounds] = useState([intialGuess]);
+
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     if (currentGuess === userNum) {
@@ -89,13 +93,8 @@ function GameScreen({ userNum, isGameOver }) {
     return rndNumber;
   }
 
-  return (
-    // // <LinearGradient colors={[Colors.primary500,Colors.accent500]}
-    // style={styles.container}
-    // >
-
-    <View style={styles.container}>
-      <Title>Opponnent Guess</Title>
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <View style={styles.innerContainer}>
@@ -125,9 +124,48 @@ function GameScreen({ userNum, isGameOver }) {
 
         {/* <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton> */}
       </Card>
+    </>
+  );
 
+  if (width > 500) {
+    content = (
+      <>
+        {/* <InstructionText style={styles.instructionText}>
+          Higher or Lower
+        </InstructionText> */}
+        <View style={styles.buttonContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton
+              onPress={nextGuessHandler.bind(this, "higher")}
+              ripple_color={"blue"}
+            >
+              <Ionicons name="add-sharp" size={24} color="blue" />
+            </PrimaryButton>
+          </View>
+
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton
+              onPress={nextGuessHandler.bind(this, "lower")}
+              ripple_color={"red"}
+            >
+              <Ionicons name="remove-circle" size={24} color="pink" />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+  return (
+    // <LinearGradient colors={[Colors.primary500,Colors.accent500]}
+    // style={styles.container}
+    // >
+    // <ScrollView style={styles.screen}>
+    <View style={styles.container}>
+      <Title>Opponnent Guess</Title>
+      {content}
       <View>
-        <Title>Guesses</Title>
+        {/* <Title>Guesses</Title> */}
         <FlatList
           data={guessRounds}
           renderItem={({ item }) => <LogRounds item={item}></LogRounds>}
@@ -139,17 +177,19 @@ function GameScreen({ userNum, isGameOver }) {
         ))} */}
       </View>
     </View>
+    // </ScrollView>
 
     // </LinearGradient>
   );
 }
 
-const deviceHeight = Dimensions.get("window").height;
+const { height, width } = Dimensions.get("window");
+const isLandscape = width > height;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 200,
+    // marginVertical: 200,
     // backgroundColor: "white",
     borderColor: "black",
     alignItems: "center",
@@ -203,6 +243,10 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     // backgroundColor: "white",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 
